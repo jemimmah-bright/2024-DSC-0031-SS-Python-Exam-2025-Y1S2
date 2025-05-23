@@ -16,6 +16,7 @@ student_id = 1
 # creating a new program
 @app.route('/programs', methods = ['POST'])
 def create_program():
+    global program_id_counter
     data= request.json
     pid=program_id_counter
     programs[pid] = {"id":pid,"name" :data["name"],"duration":data.get("duration")}
@@ -30,7 +31,7 @@ def create_courses():
     cid =course_id_counter
     if data["program_id"] not in programs:
         return jsonify ({"error": "program not foung"})  , 404
-    courses [cid]= {"id":cid, "name": date ["name"], "program_id": data ["program_id"]}
+    courses [cid]= {"id":cid, "name": data["name"], "program_id": data ["program_id"]}
     course_id_counter +=1
     return jsonify(courses[cid]), 201
     
@@ -38,6 +39,7 @@ def create_courses():
 # creating a new student
 @app.route ('students', methods = ['POST'])
 def create_student():
+    global student_id_counter
     data = request.json
     sid = student_id_counter
     if data ["program_id"] not in programs:
@@ -82,7 +84,7 @@ def update_program(pid):
     programs[pid].updat(data)
     return jsonify(programs[pid]),200
 
-if _name_ == '__main__':
+if __name__ == '__main__':
     app.run(debug=True)
 
 
